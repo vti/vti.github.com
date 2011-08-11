@@ -1,1 +1,1190 @@
-Underscore-perl!
+<!DOCTYPE HTML>
+<!-- Shamelessly stolen with the minimal changes from
+    http://documentcloud.github.com/underscore/ -->
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>Underscore-perl</title>
+  <style>
+    body {
+      font-size: 16px;
+      line-height: 24px;
+      background: #ffc973;
+      color: #252519;
+      font-family: Helvetica, serif;
+    }
+    div.container {
+      width: 720px;
+      margin: 50px 0 50px 50px;
+    }
+    p {
+      width: 550px;
+    }
+      #documentation p {
+        margin-bottom: 4px;
+      }
+    a, a:visited {
+      padding: 0 2px;
+      text-decoration: none;
+      background: #a66500;
+      color: #ffc973;
+    }
+    a:active, a:hover {
+      color: #000;
+      background: #ff9c00;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 40px;
+    }
+    b.header {
+      font-size: 18px;
+    }
+    span.alias {
+      font-size: 14px;
+      font-style: italic;
+      margin-left: 20px;
+    }
+    table, tr, td {
+      margin: 0; padding: 0;
+    }
+      td {
+        padding: 2px 12px 2px 0;
+      }
+    code, pre, tt {
+      font-family: Monaco, Consolas, "Lucida Console", monospace;
+      font-size: 12px;
+      line-height: 18px;
+      color: #555529;
+    }
+      code {
+        margin-left: 20px;
+      }
+      pre {
+        font-size: 12px;
+        padding: 2px 0 2px 12px;
+        border-left: 6px solid #ffb540;
+        margin: 0px 0 30px;
+      }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>Underscore-perl <i style="padding-left: 12px; font-size:12px;">by <a
+                href="http://github.com/vti">vti</a></i></h1>
+
+    <p>
+      <a href="http://github.com/vti/underscore/">Underscore-perl</a> is a
+      Perl clone of a popular JavaScript library <a
+          href="http://github.com/documentcloud/underscore">Underscore.js</a>.
+      Why? Because Perl is awesome. And because we can!
+    </p>
+
+    <p>
+      This document provides a method reference and describes the differences.
+      For the full introduction see original page of <a
+          href="http://documentcloud.github.com/underscore/">Underscore.js</a>.
+    </p>
+
+    <p>
+      The test suite is compatible with the original one, except for those functions
+      that were not ported.
+    </p>
+
+    <p>
+      The project is
+      <a href="http://github.com/vti/underscore-perl/">hosted on GitHub</a>.
+      You can report bugs and discuss features on the
+      <a href="http://github.com/vti/underscore-perl/issues">issues page</a>,
+      or follow this crazy guy <a href="http://twitter.com/vtivti">@vtivti</a>.
+    </p>
+
+    <h2>Installation</h2>
+
+    <p>
+        It will be available on <a href="http://search.cpan.org">CPAN</a> soon.
+        Before that you can install it manually.
+    </p>
+    <pre>
+cpanm http://github.com/vti/underscore-perl/tarball/master
+</pre>
+
+    <h2>Usage</h2>
+
+    <pre>
+use Underscore;
+
+_([3, 2, 1])->sort;
+</pre>
+
+    <h2>Table of Contents</h2>
+
+    <a href="#differences">The main differences</a>
+    <a href="#details">Implementation details</a>
+    <a href="#styles">Object-Oriented and Functional Styles</a>
+
+    <p>
+      <b>Collections</b>
+      <br />
+
+      <span class="methods"><a href="#each">each</a>, <a href="#map">map</a>,
+      <a href="#reduce">reduce</a>, <a href="#reduceRight">reduceRight</a>,
+      <a href="#detect">detect</a>, <a href="#select">select</a>,
+      <a href="#reject">reject</a>, <a href="#all">all</a>,
+      <a href="#any">any</a>, <a href="#include">include</a>,
+      <a href="#invoke">invoke</a>, <a href="#pluck">pluck</a>,
+      <a href="#max">max</a>, <a href="#min">min</a>,
+      <a href="#sortBy">sortBy</a>, <a href="#groupBy">groupBy</a>, <a href="#sortedIndex">sortedIndex</a>,
+      <a href="#toArray">toArray</a>, <a href="#size">size</a></span>
+
+    </p>
+
+    <p>
+      <b>Arrays</b>
+      <br />
+      <span class="methods"><a href="#first">first</a>, <a href="#rest">rest</a>, <a href="#last">last</a>,
+      <a href="#compact">compact</a>, <a href="#flatten">flatten</a>, <a href="#without">without</a>,
+      <a href="#union">union</a>, <a href="#intersection">intersection</a>, <a href="#difference">difference</a>,
+      <a href="#uniq">uniq</a>, <a href="#zip">zip</a>, <a href="#indexOf">indexOf</a>,
+      <a href="#lastIndexOf">lastIndexOf</a>, <a href="#range">range</a></span>
+
+    </p>
+
+    <p>
+      <b>Functions</b>
+      <br />
+      <span class="methods"><a href="#bind">bind</a>, <a href="#bindAll">bindAll</a>,
+      <a href="#memoize">memoize</a>, delay, defer,
+      throttle, debounce,
+      <a href="#once">once</a>, <a href="#after">after</a>, <a href="#wrap">wrap</a>, <a href="#compose">compose</a></span>
+
+    </p>
+
+    <p>
+      <b>Objects</b>
+      <br />
+      <span class="methods"><a href="#keys">keys</a>, <a href="#values">values</a>,
+      <a href="#functions">functions</a>, <a href="#extend">extend</a>, <a href="#defaults">defaults</a>, <a href="#clone">clone</a>, <a href="#tap">tap</a>,
+      <a href="#isEqual">isEqual</a>, <a href="#isEmpty">isEmpty</a>, isElement,
+      <a href="#isArray">isArray</a>, isArguments, <a href="#isFunction">isFunction</a>, <a href="#isString">isString</a>,
+      <a href="#isNumber">isNumber</a>, <a href="#isBoolean">isBoolean</a>, <a href="#isDate">isDate</a>, <a href="#isRegExp">isRegExp</a>
+
+      isNaN, isNull,
+      <a href="#isUndefined">isUndefined</a>
+      </span>
+    </p>
+
+    <p>
+      <b>Utility</b>
+
+      <br />
+      <span class="methods">noConflict,
+      <a href="#identity">identity</a>, <a href="#times">times</a>,
+      <a href="#mixin">mixin</a>, <a href="#uniqueId">uniqueId</a>,
+      <a href="#template">template</a></span>
+    </p>
+
+    <p>
+      <b>Chaining</b>
+      <br />
+      <span class="methods"><a href="#chain">chain</a>, <a href="#value">value</a>
+    </p>
+
+    <div id="documentation">
+
+      <h2 id="differences">The main differences</h2>
+
+      <p>
+        All the methods have CamelCase aliases. Use whatever you like. I
+        personally prefer underscores.
+      </p>
+
+      <p>
+        Objects are simply hashes, not Perl objects. Maybe objects will be added
+        later.
+      </p>
+
+      <p>
+        Of course not everything was ported. Some things don't make any sense
+        for Perl, other are impossible to implement without depending on event
+        loops and async programming.
+      </p>
+
+      <h2 id="details">Implementation details</h2>
+
+      <p>
+        Most of the functions are just wrappers around built-in functions.
+        Others use <a
+            href="http://search.cpan.org/perldoc?List%3A%3AUtil">List::Util</a>
+        and <a href="http://search.cpan.org/perldoc?List%3A%3AMoreUtils">List::MoreUtils</a>
+        modules.
+      </p>
+
+      <p>
+        Numeric/String detection is done the same way <a
+            href="http://search.cpan.org/perldoc?JSON%3A%3APP">JSON::PP</a>
+        does it: by using <a href="http://search.cpan.org/perldoc?B">B</a> hacks.
+      </p>
+
+      <p>
+        Boolean values are implemented as overloaded methods, that return
+        numbers or strings depending on the context.
+      </p>
+      <pre>
+_->true;
+_->false;
+</pre>
+
+      <h2 id="styles">Object-Oriented and Functional Styles</h2>
+
+      <p>
+        As original Underscore.js you can use Perl version in either an
+        object-oriented or a functional style, depending on your preference. The
+        following two lines of code are identical ways to double a list of
+        numbers.
+      </p>
+
+    <pre>
+_->map([1, 2, 3], sub { my ($n) = @_; $n * 2; });
+_([1, 2, 3])->map(sub { my ($n) = @_; $n * 2; });
+</pre>
+
+      <p>
+        See <a href="http://documentcloud.github.com/underscore/#styles">original
+          documentation</a> why sometimes object-oriented style is better.
+      </p>
+
+      <h2>Collection Functions (Arrays or Objects)</h2>
+
+      <p id="each">
+        <b class="header">each</b><code>_->each(list, iterator, [context])</code>
+        <span class="alias">Alias: <b>forEach</b></span>
+        <br />
+        Iterates over a <b>list</b> of elements, yielding each in turn to an <b>iterator</b>
+        function. The <b>iterator</b> is bound to the <b>context</b> object, if one is
+        passed. Each invocation of <b>iterator</b> is called with three arguments:
+        <tt>(element, index, list)</tt>.
+      </p>
+
+      <pre>
+_->each([1, 2, 3], sub { my ($num) = @_; warn $num; });
+# warns each number in turn...
+_->each({one => 1, two => 2, three => 3} =>
+      sub { my ($num, $key) = @_; warn $num; });
+# warns each number in turn...</pre>
+
+      <p id="map">
+        <b class="header">map</b><code>_->map(list, iterator, [context])</code>
+        <br />
+
+        Produces a new array of values by mapping each value in <b>list</b>
+        through a transformation function (<b>iterator</b>).
+      </p>
+
+      <pre>
+_->map([1, 2, 3], sub { my ($num) = @_; $num * 3; });
+# [3, 6, 9]
+_->map({one : 1, two : 2, three : 3} => sub { my ($num, key) = @_; $num * 3; });
+# [3, 6, 9]</pre>
+
+      <p id="reduce">
+        <b class="header">reduce</b><code>_->reduce(list, iterator, memo, [context])</code>
+        <span class="alias">Aliases: <b>inject, foldl</b></span>
+
+        <br />
+        Also known as <b>inject</b> and <b>foldl</b>, <b>reduce</b> boils down a
+        <b>list</b> of values into a single value. <b>Memo</b> is the initial state
+        of the reduction, and each successive step of it should be returned by
+        <b>iterator</b>.
+      </p>
+
+      <pre>
+my $sum =
+  _->reduce([1, 2, 3] => sub { my ($memo, $num) = @_; $memo + $num; }, 0);
+# 6
+</pre>
+
+      <p id="reduceRight">
+        <b class="header">reduceRight</b><code>_->reduceRight(list, iterator, memo, [context])</code>
+        <span class="alias">Alias: <b>foldr</b></span>
+
+        <br />
+        The right-associative version of <b>reduce</b>.
+      </p>
+      <pre>
+my $list = [[0, 1], [2, 3], [4, 5]];
+my $flat =
+  _->reduceRight($list, sub { my ($a, $b) = @_; $a->concat($b); }, []);
+# [4, 5, 2, 3, 0, 1]
+</pre>
+
+      <p id="detect">
+        <b class="header">detect</b><code>_->detect(list, iterator, [context])</code>
+        <br />
+        Looks through each value in the <b>list</b>, returning the first one that
+        passes a truth test (<b>iterator</b>). The function returns as
+        soon as it finds an acceptable element, and doesn't traverse the
+        entire list.
+      </p>
+
+      <pre>
+my $even =
+  _->detect([1, 2, 3, 4, 5, 6] => sub { my ($num) = @_; $num % 2 == 0; });
+# 2
+</pre>
+
+      <p id="select">
+        <b class="header">select</b><code>_->select(list, iterator, [context])</code>
+        <span class="alias">Alias: <b>filter</b></span>
+
+        <br />
+        Looks through each value in the <b>list</b>, returning an array of all
+        the values that pass a truth test (<b>iterator</b>).
+      </p>
+      <pre>
+my $evens =
+  _->select([1, 2, 3, 4, 5, 6] => sub { my ($num) = @_; $num % 2 == 0; });
+# [2, 4, 6]
+</pre>
+
+      <p id="reject">
+        <b class="header">reject</b><code>_->reject(list, iterator, [context])</code>
+        <br />
+        Returns the values in <b>list</b> without the elements that the truth
+        test (<b>iterator</b>) passes. The opposite of <b>select</b>.
+      </p>
+
+      <pre>
+my $odds =
+  _->reject([1, 2, 3, 4, 5, 6] => sub { my ($num) = @_; $num % 2 == 0; });
+# [1, 3, 5]
+</pre>
+
+      <p id="all">
+        <b class="header">all</b><code>_->all(list, iterator, [context])</code>
+        <span class="alias">Alias: <b>every</b></span>
+
+        <br />
+        Returns <i>true</i> if all of the values in the <b>list</b> pass the <b>iterator</b>
+        truth test.
+      </p>
+
+      <pre>
+_->all([_->true, 1, undef, 'yes'] => sub { my ($n) = @_; $n eq 'hello' });
+# false
+</pre>
+
+      <p id="any">
+        <b class="header">any</b><code>_->any(list, [iterator], [context])</code>
+        <span class="alias">Alias: <b>some</b></span>
+
+        <br />
+        Returns <i>true</i> if any of the values in the <b>list</b> pass the
+        <b>iterator</b> truth test. Short-circuits and stops traversing the list
+        if a true element is found.
+      </p>
+      <pre>
+
+_->any([undef, 0, 'yes', _->false]);
+# true
+</pre>
+
+      <p id="include">
+        <b class="header">include</b><code>_->include(list, value)</code>
+        <span class="alias">Alias: <b>contains</b></span>
+        <br />
+
+        Returns <i>true</i> if the <b>value</b> is present in the <b>list</b>, using
+        <i>eq</i> to test equality.
+      </p>
+      <pre>
+_->include([1, 2, 3], 3);
+# true
+</pre>
+
+      <p id="invoke">
+        <b class="header">invoke</b><code>_->invoke(list, methodName, [*arguments])</code>
+        <br />
+
+        Calls the method named by <b>methodName</b> on each value in the <b>list</b>.
+        Any extra arguments passed to <b>invoke</b> will be forwarded on to the
+        method invocation.
+      </p>
+      <pre>
+_->invoke([[5, 1, 7], [3, 2, 1]], 'sort');
+# [[1, 5, 7], [1, 2, 3]]
+</pre>
+
+      <p id="pluck">
+        <b class="header">pluck</b><code>_->pluck(list, propertyName)</code>
+        <br />
+        A convenient version of what is perhaps the most common use-case for
+        <b>map</b>: extracting a list of property values.
+      </p>
+      <pre>
+my $stooges = [
+    {name => 'moe',   age => 40},
+    {name => 'larry', age => 50},
+    {name => 'curly', age => 60}
+];
+_->pluck(stooges, 'name');
+# ["moe", "larry", "curly"]
+</pre>
+
+      <p id="max">
+        <b class="header">max</b><code>_->max(list, [iterator], [context])</code>
+        <br />
+        Returns the maximum value in <b>list</b>. If <b>iterator</b> is passed,
+        it will be used on each value to generate the criterion by which the
+        value is ranked.
+      </p>
+
+      <pre>
+my $stooges = [
+    {name => 'moe',   age => 40},
+    {name => 'larry', age => 50},
+    {name => 'curly', age => 60}
+];
+_->max(stooges, sub { my ($stooge) = @_; $stooge->{age}; });
+# {name => 'curly', age => 60};
+</pre>
+
+      <p id="min">
+        <b class="header">min</b><code>_->min(list, [iterator], [context])</code>
+        <br />
+        Returns the minimum value in <b>list</b>. If <b>iterator</b> is passed,
+        it will be used on each value to generate the criterion by which the
+        value is ranked.
+      </p>
+
+      <pre>
+my $numbers = [10, 5, 100, 2, 1000];
+_->min($numbers);
+# 2
+</pre>
+
+      <p id="sortBy">
+        <b class="header">sortBy</b><code>_->sortBy(list, iterator, [context])</code>
+        <br />
+        Returns a sorted copy of <b>list</b>, ranked by the results of running
+        each value through <b>iterator</b>.
+      </p>
+
+      <pre>
+_->sortBy([1, 2, 3, 4, 5, 6] => sub { my ($num) = @_; sin($num); });
+# [5, 4, 6, 3, 1, 2]
+</pre>
+
+      <p id="groupBy">
+        <b class="header">groupBy</b><code>_->groupBy(list, iterator)</code>
+        <br />
+        Splits a collection into sets, grouped by the result of running each
+        value through <b>iterator</b>.
+      </p>
+
+      <pre>
+_->groupBy([1.3, 2.1, 2.4] => sub { my ($num) = @_; floor($num); });
+# {1 => [1.3], 2 => [2.1, 2.4]}
+</pre>
+
+      <p id="sortedIndex">
+        <b class="header">sortedIndex</b><code>_->sortedIndex(list, value, [iterator])</code>
+        <br />
+        Uses a binary search to determine the index at which the <b>value</b>
+
+        <i>should</i> be inserted into the <b>list</b> in order to maintain the <b>list</b>'s
+        sorted order. If an <b>iterator</b> is passed, it will be used to compute
+        the sort ranking of each value.
+      </p>
+      <pre>
+_->sortedIndex([10, 20, 30, 40, 50], 35);
+# 3
+</pre>
+
+      <p id="toArray">
+        <b class="header">toArray</b><code>_->toArray(list)</code>
+        <br />
+        Converts the <b>list</b> (anything that can be iterated over), into a
+        real Array. Useful for transmuting the <b>arguments</b> object.
+      </p>
+
+      <pre>
+_->toArray({one => 1, two => 2, three => 3});
+# [1, 2, 3]
+</pre>
+
+      <p id="size">
+        <b class="header">size</b><code>_->size(list)</code>
+        <br />
+        Return the number of values in the <b>list</b>.
+      </p>
+
+      <pre>
+_->size({one => 1, two => 2, three => 3});
+# 3
+</pre>
+
+      <h2>Array Functions</h2>
+
+      <p>
+        <i>Note: All array functions will also work on the <b>arguments</b> object.</i>
+
+      </p>
+
+      <p id="first">
+        <b class="header">first</b><code>_->first(array, [n])</code>
+        <span class="alias">Alias: <b>head</b></span>
+        <br />
+        Returns the first element of an <b>array</b>. Passing <b>n</b> will
+        return the first <b>n</b> elements of the array.
+      </p>
+
+      <pre>
+_->first([5, 4, 3, 2, 1]);
+# 5
+</pre>
+
+      <p id="rest">
+        <b class="header">rest</b><code>_->rest(array, [index])</code>
+        <span class="alias">Alias: <b>tail</b></span>
+
+        <br />
+        Returns the <b>rest</b> of the elements in an array. Pass an <b>index</b>
+        to return the values of the array from that index onward.
+      </p>
+      <pre>
+_->rest([5, 4, 3, 2, 1]);
+# [4, 3, 2, 1]
+</pre>
+
+      <p id="last">
+        <b class="header">last</b><code>_->last(array)</code>
+        <br />
+        Returns the last element of an <b>array</b>.
+      </p>
+      <pre>
+
+_->last([5, 4, 3, 2, 1]);
+# 1
+</pre>
+
+      <p id="compact">
+        <b class="header">compact</b><code>_->compact(array)</code>
+        <br />
+        Returns a copy of the <b>array</b> with all falsy values removed.
+        In JavaScript, <i>false</i>, <i>null</i>, <i>0</i>, <i>""</i>,
+        <i>undefined</i> and <i>NaN</i> are all falsy.
+      </p>
+
+      <pre>
+_->compact([0, 1, _->false, 2, '', 3]);
+# [1, 2, 3]
+</pre>
+
+      <p id="flatten">
+        <b class="header">flatten</b><code>_->flatten(array)</code>
+        <br />
+        Flattens a nested <b>array</b> (the nesting can be to any depth).
+      </p>
+
+      <pre>
+_->flatten([1, [2], [3, [[[4]]]]]);
+# [1, 2, 3, 4];
+</pre>
+
+      <p id="without">
+        <b class="header">without</b><code>_->without(array, [*values])</code>
+        <br />
+        Returns a copy of the <b>array</b> with all instances of the <b>values</b>
+        removed. <i>eq</i> is used for the equality test.
+      </p>
+      <pre>
+_->without([1, 2, 1, 0, 3, 1, 4], 0, 1);
+# [2, 3, 4]
+</pre>
+
+      <p id="union">
+        <b class="header">union</b><code>_->union(*arrays)</code>
+
+        <br />
+        Computes the union of the passed-in <b>arrays</b>: the list of unique items,
+        in order, that are present in one or more of the <b>arrays</b>.
+      </p>
+      <pre>
+_->union([1, 2, 3], [101, 2, 1, 10], [2, 1]);
+# [1, 2, 3, 101, 10]
+</pre>
+
+      <p id="intersection">
+
+        <b class="header">intersection</b><code>_->intersection(*arrays)</code>
+        <br />
+        Computes the list of values that are the intersection of all the <b>arrays</b>.
+        Each value in the result is present in each of the <b>arrays</b>.
+      </p>
+      <pre>
+_->intersection([1, 2, 3], [101, 2, 1, 10], [2, 1]);
+# [1, 2]
+</pre>
+
+      <p id="difference">
+        <b class="header">difference</b><code>_->difference(array, other)</code>
+        <br />
+        Similar to <b>without</b>, but returns the values from <b>array</b> that
+        are not present in <b>other</b>.
+      </p>
+
+      <pre>
+_->difference([1, 2, 3, 4, 5], [5, 2, 10]);
+# [1, 3, 4]
+</pre>
+
+      <p id="uniq">
+        <b class="header">uniq</b><code>_->uniq(array, [isSorted])</code>
+        <span class="alias">Alias: <b>unique</b></span>
+
+        <br />
+        Produces a duplicate-free version of the <b>array</b>, using <i>===</i> to test
+        object equality. If you know in advance that the <b>array</b> is sorted,
+        passing <i>true</i> for <b>isSorted</b> will run a much faster algorithm.
+      </p>
+
+      <pre>
+_->uniq([1, 2, 1, 3, 1, 4]);
+# [1, 2, 3, 4]
+</pre>
+
+      <p id="zip">
+        <b class="header">zip</b><code>_->zip(*arrays)</code>
+        <br />
+        Merges together the values of each of the <b>arrays</b> with the
+        values at the corresponding position. Useful when you have separate
+        data sources that are coordinated through matching array indexes.
+        If you're working with a matrix of nested arrays, <b>zip.apply</b>
+        can transpose the matrix in a similar fashion.
+      </p>
+      <pre>
+_->zip(['moe', 'larry', 'curly'], [30, 40, 50], [_->true, _->false, _->false]);
+# [["moe", 30, _->true], ["larry", 40, _->false], ["curly", 50, _->false]]
+</pre>
+
+      <p id="indexOf">
+        <b class="header">indexOf</b><code>_->indexOf(array, value, [isSorted])</code>
+        <br />
+
+        Returns the index at which <b>value</b> can be found in the <b>array</b>,
+        or <i>-1</i> if value is not present in the <b>array</b>. Uses the native
+        <b>indexOf</b> function unless it's missing. If you're working with a
+        large array, and you know that the array is already sorted, pass <tt>true</tt>
+        for <b>isSorted</b> to use a faster binary search.
+      </p>
+      <pre>
+_->indexOf([1, 2, 3], 2);
+# 1
+</pre>
+
+      <p id="lastIndexOf">
+        <b class="header">lastIndexOf</b><code>_->lastIndexOf(array, value)</code>
+
+        <br />
+        Returns the index of the last occurrence of <b>value</b> in the <b>array</b>,
+        or <i>-1</i> if value is not present. Uses the native <b>lastIndexOf</b>
+        function if possible.
+      </p>
+
+      <pre>
+_->lastIndexOf([1, 2, 3, 1, 2, 3], 2);
+# 4
+</pre>
+
+      <p id="range">
+        <b class="header">range</b><code>_->range([start], stop, [step])</code>
+        <br />
+        A function to create flexibly-numbered lists of integers, handy for
+        <tt>each</tt> and <tt>map</tt> loops. <b>start</b>, if omitted, defaults
+        to <i>0</i>; <b>step</b> defaults to <i>1</i>. Returns a list of integers
+        from <b>start</b> to <b>stop</b>, incremented (or decremented) by <b>step</b>,
+        exclusive.
+      </p>
+
+      <pre>
+_->range(10);
+# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+_->range(1, 11);
+# [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+_->range(0, 30, 5);
+# [0, 5, 10, 15, 20, 25]
+_->range(0, -10, -1);
+# [0, -1, -2, -3, -4, -5, -6, -7, -8, -9]
+_->range(0);
+# []
+</pre>
+
+      <h2>Function Methods (haha, no confusion!)</h2>
+
+      <p id="bind">
+        <b class="header">bind</b><code>_->bind(function, object, [*arguments])</code>
+        <br />
+        Bind a <b>function</b> to an <b>object</b>, meaning that whenever
+        the function is called, the value of <i>this</i> will be the <b>object</b>.
+        Optionally, bind <b>arguments</b> to the <b>function</b> to pre-fill them,
+        also known as <b>currying</b>.
+      </p>
+
+      <pre>
+my $func =
+  sub { my ($this, $greeting) = @_; $greeting . ': ' . $this->{name} };
+$func = _->bind($func, {name => 'moe'}, 'hi');
+$func->();
+# 'hi: moe'
+</pre>
+
+      <!--<p id="bindAll">-->
+        <!--<b class="header">bindAll</b><code>_->bindAll(object, [*methodNames])</code>-->
+        <!--<br />-->
+        <!--Binds a number of methods on the <b>object</b>, specified by-->
+        <!--<b>methodNames</b>, to be run in the context of that object whenever they-->
+        <!--are invoked. Very handy for binding functions that are going to be used-->
+        <!--as event handlers, which would otherwise be invoked with a fairly useless-->
+        <!--<i>this</i>. If no <b>methodNames</b> are provided, all of the object's-->
+        <!--function properties will be bound to it.-->
+      <!--</p>-->
+
+      <!--<pre>-->
+<!--var buttonView = {-->
+  <!--label   : 'underscore',-->
+  <!--onClick : function(){ alert('clicked: ' + this.label); },-->
+  <!--onHover : function(){ console.log('hovering: ' + this.label); }-->
+<!--};-->
+<!--_->bindAll(buttonView);-->
+<!--jQuery('#underscore_button').bind('click', buttonView.onClick);-->
+<!--=&gt; When the button is clicked, this.label will have the correct value...-->
+<!--</pre>-->
+
+      <p id="memoize">
+        <b class="header">memoize</b><code>_->memoize(function, [hashFunction])</code>
+        <br />
+        Memoizes a given <b>function</b> by caching the computed result. Useful
+        for speeding up slow-running computations. If passed an optional
+        <b>hashFunction</b>, it will be used to compute the hash key for storing
+        the result, based on the arguments to the original function. The default
+        <b>hashFunction</b> just uses the first argument to the memoized function
+        as the key.
+      </p>
+
+      <pre>
+my $fibonacci;
+$fibonacci = sub {
+    my ($n) = @_;
+    $n &lt; 2 ? $n : $fibonacci->($n - 1) + $fibonacci->($n - 2);
+};
+my $fastFibonacci = _->memoize($fibonacci);
+</pre>
+
+      <p id="once">
+        <b class="header">once</b><code>_->once(function)</code>
+        <br />
+        Creates a version of the function that can only be called one time.
+        Repeated calls to the modified function will have no effect, returning
+        the value from the original call. Useful for initialization functions,
+        instead of having to set a boolean flag and then check it later.
+      </p>
+      <pre>
+
+my $initialize = _->once($createApplication);
+$initialize->();
+$initialize->();
+// Application is only created once.
+</pre>
+
+      <p id="after">
+        <b class="header">after</b><code>_->after(count, function)</code>
+        <br />
+        Creates a version of the function that will only be run after first
+        being called <b>count</b> times. Useful for grouping asynchronous responses,
+        where you want to be sure that all the async calls have finished, before
+        proceeding.
+      </p>
+
+      <pre>
+my $renderNotes = _->after(length $notes, $render);
+_->each($notes, sub {
+    my ($note) = @_;
+    $note->asyncSave({success => $renderNotes});
+});
+// renderNotes is run once, after all notes have saved.
+</pre>
+
+      <p id="wrap">
+        <b class="header">wrap</b><code>_->wrap(function, wrapper)</code>
+        <br />
+        Wraps the first <b>function</b> inside of the <b>wrapper</b> function,
+        passing it as the first argument. This allows the <b>wrapper</b> to
+        execute code before and after the <b>function</b> runs, adjust the arguments,
+        and execute it conditionally.
+      </p>
+
+      <pre>
+my $hello = sub { my ($name) = @_; "hello: " . $name; };
+$hello = _->wrap(
+    $hello => sub {
+        my ($func) = @_;
+        "before, " . $func->("moe") . ", after";
+    }
+);
+$hello->();
+# 'before, hello: moe, after'
+</pre>
+
+      <p id="compose">
+        <b class="header">compose</b><code>_->compose(*functions)</code>
+        <br />
+        Returns the composition of a list of <b>functions</b>, where each function
+        consumes the return value of the function that follows. In math terms,
+        composing the functions <i>f()</i>, <i>g()</i>, and <i>h()</i> produces
+        <i>f(g(h()))</i>.
+      </p>
+
+      <pre>
+my $greet   = sub { my ($name)      = @_; "hi: " . name; };
+my $exclaim = sub { my ($statement) = @_; $statement . "!"; };
+my $welcome = _->compose($exclaim, $greet);
+$welcome->('moe');
+# 'hi: moe!'
+</pre>
+
+      <h2>Object Functions</h2>
+
+      <p id="keys">
+        <b class="header">keys</b><code>_->keys(object)</code>
+
+        <br />
+        Retrieve all the names of the <b>object</b>'s properties.
+      </p>
+      <pre>
+_->keys({one => 1, two => 2, three => 3});
+# ["one", "two", "three"]
+</pre>
+
+      <p id="values">
+        <b class="header">values</b><code>_->values(object)</code>
+
+        <br />
+        Return all of the values of the <b>object</b>'s properties.
+      </p>
+      <pre>
+_->values({one => 1, two => 2, three => 3});
+# [1, 2, 3]
+</pre>
+
+      <p id="functions">
+        <b class="header">functions</b><code>_->functions(object)</code>
+
+        <span class="alias">Alias: <b>methods</b></span>
+        <br />
+        Returns a sorted list of the names of every method in an object &mdash;
+        that is to say, the name of every function property of the object.
+      </p>
+      <pre>
+_->functions(_);
+# ["all", "any", "bind", "bindAll", "clone", "compact", "compose" ...
+</pre>
+
+      <p id="extend">
+        <b class="header">extend</b><code>_->extend(destination, *sources)</code>
+        <br />
+        Copy all of the properties in the <b>source</b> objects over to the
+        <b>destination</b> object. It's in-order, to the last source will override
+        properties of the same name in previous arguments.
+      </p>
+
+      <pre>
+_->extend({name => 'moe'}, {age => 50});
+# {name => 'moe', age => 50}
+</pre>
+
+      <p id="defaults">
+        <b class="header">defaults</b><code>_->defaults(object, *defaults)</code>
+        <br />
+        Fill in missing properties in <b>object</b> with default values from the
+        <b>defaults</b> objects. As soon as the property is filled, further defaults
+        will have no effect.
+      </p>
+
+      <pre>
+my $iceCream = {flavor => "chocolate"};
+_->defaults($iceCream, {flavor => "vanilla", sprinkles => "lots"});
+# {flavor => "chocolate", sprinkles => "lots"}
+</pre>
+
+      <p id="clone">
+        <b class="header">clone</b><code>_->clone(object)</code>
+        <br />
+        Create a shallow-copied clone of the <b>object</b>. Any nested objects
+        or arrays will be copied by reference, not duplicated.
+      </p>
+
+      <pre>
+_->clone({name => 'moe'});
+# {name => 'moe'};
+</pre>
+
+      <p id="tap">
+        <b class="header">tap</b><code>_->tap(object, interceptor)</code>
+        <br />
+        Invokes <b>interceptor</b> with the <b>object</b>, and then returns
+        <b>object</b>. The primary purpose of this method is to "tap into" a
+        method chain, in order to perform operations on intermediate results
+        within the chain.
+      </p>
+
+      <pre>
+_([1,2,3,200])->chain()->
+  select(sub { my ($num) = @_; $num % 2 == 0; })->
+  tap(sub { warn $_ })->
+  map(sub { my ($num) = @_; $num * $num })->
+  value();
+# [2, 200]
+# [4, 40000]
+</pre>
+
+      <!--<p id="isEqual">-->
+        <!--<b class="header">isEqual</b><code>_->isEqual(object, other)</code>-->
+        <!--<br />-->
+
+        <!--Performs an optimized deep comparison between the two objects, to determine-->
+        <!--if they should be considered equal.-->
+      <!--</p>-->
+      <!--<pre>-->
+<!--var moe   = {name : 'moe', luckyNumbers : [13, 27, 34]};-->
+<!--var clone = {name : 'moe', luckyNumbers : [13, 27, 34]};-->
+<!--moe == clone;-->
+<!--=&gt; false-->
+<!--_->isEqual(moe, clone);-->
+<!--=&gt; true-->
+<!--</pre>-->
+
+      <p id="isEmpty">
+        <b class="header">isEmpty</b><code>_->isEmpty(object)</code>
+
+        <br />
+        Returns <i>true</i> if <b>object</b> contains no values.
+      </p>
+      <pre>
+_->isEmpty([1, 2, 3]);
+# false
+_->isEmpty({});
+# true
+</pre>
+
+      <p id="isArray">
+        <b class="header">isArray</b><code>_->isArray(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is an Array.
+      </p>
+
+      <pre>
+_->isArray([1,2,3]);
+# true
+</pre>
+
+      <p id="isFunction">
+        <b class="header">isFunction</b><code>_->isFunction(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is a Function.
+      </p>
+
+      <pre>
+_->isFunction(sub {});
+# true
+</pre>
+
+      <p id="isString">
+        <b class="header">isString</b><code>_->isString(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is a String.
+      </p>
+
+      <pre>
+_->isString("moe");
+# true
+</pre>
+
+      <p id="isNumber">
+        <b class="header">isNumber</b><code>_->isNumber(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is a Number.
+      </p>
+
+      <pre>
+_->isNumber(8.4 * 5);
+# true
+</pre>
+
+      <p id="isBoolean">
+        <b class="header">isBoolean</b><code>_->isBoolean(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is either <i>true</i> or <i>false</i>.
+      </p>
+
+      <pre>
+_->isBoolean(undef);
+# false
+</pre>
+
+      <p id="isRegExp">
+        <b class="header">isRegExp</b><code>_->isRegExp(object)</code>
+        <br />
+        Returns <i>true</i> if <b>object</b> is a RegExp.
+      </p>
+
+      <pre>
+_->isRegExp(qr/moe/);
+# true
+</pre>
+
+      <p id="isUndefined">
+        <b class="header">isUndefined</b><code>_->isUndefined(variable)</code>
+        <br />
+        Returns <i>true</i> if <b>variable</b> is <i>undefined</i>.
+      </p>
+
+      <pre>
+_->isUndefined(undef);
+# true
+</pre>
+
+      <h2>Utility Functions</h2>
+
+      <p id="identity">
+        <b class="header">identity</b><code>_->identity(value)</code>
+
+        <br />
+        Returns the same value that is used as the argument. In math:
+        <tt>f(x) = x</tt><br />
+        This function looks useless, but is used throughout Underscore as
+        a default iterator.
+      </p>
+      <pre>
+my $moe = {name => 'moe'};
+$moe eq _->identity($moe);
+# true</pre>
+
+      <p id="times">
+
+        <b class="header">times</b><code>_->times(n, iterator)</code>
+        <br />
+        Invokes the given iterator function <b>n</b> times.
+      </p>
+      <pre>
+_(3)->times(sub { $genie->grantWish(); });</pre>
+
+      <p id="mixin">
+        <b class="header">mixin</b><code>_->mixin(object)</code>
+        <br />
+        Allows you to extend Underscore with your own utility functions. Pass
+        a hash of <tt>{name => function}</tt> definitions to have your functions
+        added to the Underscore object, as well as the OOP wrapper.
+      </p>
+      <pre>
+_->mixin(
+    {   capitalize => sub {
+            my ($string) = @_;
+            ucfirst $string;
+          }
+    }
+);
+_("fabio")->capitalize();
+# "Fabio"
+</pre>
+
+      <p id="uniqueId">
+        <b class="header">uniqueId</b><code>_->uniqueId([prefix])</code>
+        <br />
+        Generate a globally-unique id. If <b>prefix</b> is passed, the id will be
+        appended to it.
+      </p>
+      <pre>
+_->uniqueId('contact_');
+# 'contact_104'</pre>
+
+      <p id="template">
+        <b class="header">template</b><code>_->template(templateString, [context])</code>
+        <br />
+        Compiles templates into functions that can be evaluated
+        for rendering. Useful for rendering complicated bits of HTML from JSON
+        data sources. Template functions can both interpolate variables, using
+        <tt>&lt;%= &hellip; %&gt;</tt>, as well as execute arbitrary Perl code, with
+        <tt>&lt;% &hellip; %&gt;</tt>. When you evaluate a template function, pass in a
+        <b>context</b> object that has properties corresponding to the template's free
+        variables. If you're writing a one-off, you can pass the <b>context</b>
+        object as the second parameter to <b>template</b> in order to render
+        immediately instead of returning a template function.
+      </p>
+      <pre>
+my $compiled = _->template("hello => &lt;%= name %&gt;");
+$compiled->({name => 'moe'});
+# "hello: moe"
+
+my $list = "&lt;% _->each($people, sub { my ($name) = @_; %&gt; &lt;li&gt;&lt;%= $name %&gt;&lt;/li&gt; &lt;% }); %&gt;";
+_->template($list, {people => ['moe', 'curly', 'larry']});
+=&gt; "&lt;li&gt;moe&lt;/li&gt;&lt;li&gt;curly&lt;/li&gt;&lt;li&gt;larry&lt;/li&gt;"</pre>
+
+      <p>
+        You can change tags too:
+      </p>
+
+      <pre>
+_->templateSettings({interpolate => qr/\{\{(.+?)\}\}/ g});
+
+my $template = _->template("Hello {{ $name }}!");
+$template->({name => "Mustache"});
+# "Hello Mustache!"</pre>
+
+      <h2>Chaining</h2>
+
+      <p id="chain">
+        <b class="header">chain</b><code>_(obj)->chain()</code>
+
+        <br />
+        Returns a wrapped object. Calling methods on this object will continue
+        to return wrapped objects until <tt>value</tt> is used.
+      </p>
+      <pre>
+my $stooges = [
+    {name => 'curly', age => 25},
+    {name => 'moe',   age => 21},
+    {name => 'larry', age => 23}
+];
+my $youngest = _($stooges)->chain()
+  .sortBy(sub { my ($stooge) = @_; $stooge->{age}; })
+  .map(sub { my ($stooge) = @_; $stooge->{name} . ' is ' . $stooge->{age}; })
+  .first()
+  .value();
+# "moe is 21"
+</pre>
+
+      <p id="value">
+        <b class="header">value</b><code>_(obj)->value()</code>
+        <br />
+        Extracts the value of a wrapped object.
+      </p>
+      <pre>
+_([1, 2, 3])->value();
+# [1, 2, 3]
+</pre>
+
+      <h2>Credits</h2>
+
+      <p>
+        Undescore.js authors and contributors.
+      </p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
