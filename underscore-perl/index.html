@@ -1168,10 +1168,10 @@ my $stooges = [
     {name => 'larry', age => 23}
 ];
 my $youngest = _($stooges)->chain()
-  .sortBy(sub { my ($stooge) = @_; $stooge->{age}; })
-  .map(sub { my ($stooge) = @_; $stooge->{name} . ' is ' . $stooge->{age}; })
-  .first()
-  .value();
+  ->sortBy(sub { my ($stooge) = @_; $stooge->{age}; })
+  ->map(sub { my ($stooge) = @_; $stooge->{name} . ' is ' . $stooge->{age}; })
+  ->first()
+  ->value();
 # "moe is 21"
 </pre>
 
